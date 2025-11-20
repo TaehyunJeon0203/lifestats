@@ -7,8 +7,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/profileForm" element={<ProfileForm />} />
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<ProfileForm />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );

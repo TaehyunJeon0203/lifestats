@@ -12,9 +12,14 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DatePicker() {
+// Props 타입 정의
+interface DatePickerProps {
+    value?: Date | null;
+    onChange?: (date: Date | null) => void;
+}
+
+export function DatePicker({ value, onChange }: DatePickerProps) {
     const [open, setOpen] = React.useState(false);
-    const [date, setDate] = React.useState<Date | undefined>(undefined);
 
     return (
         <div className="flex flex-col gap-3">
@@ -28,17 +33,17 @@ export function DatePicker() {
                         id="date"
                         className="w-48 justify-between font-normal"
                     >
-                        {date ? date.toLocaleDateString() : "Select date"}
+                        {value ? value.toLocaleDateString() : "Select date"}
                         <ChevronDownIcon />
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto overflow-hidden p-0" align="start">
                     <Calendar
                         mode="single"
-                        selected={date}
+                        selected={value || undefined}
                         captionLayout="dropdown"
                         onSelect={(date) => {
-                            setDate(date);
+                            onChange?.(date || null);
                             setOpen(false);
                         }}
                     />
