@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { pool } from '../db';
+import { calculateLifeStats } from '../utils/statsCalculator';
 
 const router = Router();
 
@@ -84,6 +85,35 @@ router.get('/', async (req, res) => {
             success: false,
             error: '프로필 조회 중 오류가 발생했습니다.' 
         });
+    }
+});
+
+
+router.get('/:id/stats', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const [rows] = await pool.execute('SELECT * FROM profiles WHERE id = ?', [id]) as any[];
+        
+        if (rows.length === 0) {
+            return res.status(404).json({ success: false, error: '프로필을 찾을 수 없습니다.' });
+        }
+        
+        const profile = rows[0];
+        const lifeStats = calculateLifeStats({
+            dateOfBirth: profile.date_of_birth,
+            sleepHours: profile.sleep_hours,
+            coffeeIntake: profile.coffee_intake
+        });
+        
+        res.json({
+            success: true,
+            data: lifeStats,
+            profile: { name: profile.name, dateOfBirth: profile.date_of_birth }
+        });
+        
+    } catch (error) {
+        console.error('❌ 라이프 통계 조회 실패:', error);
+        res.status(500).json({ success: false, error: '라이프 통계 조회 중 오류가 발생했습니다.' });
     }
 });
 
