@@ -16,21 +16,76 @@ import { CoffeeSlider } from "./coffee-slider";
 import { SleepSlider } from "./sleep-slider";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // React Router 사용
+import { GenderSelect } from "./gender-selector";
 
 export function ProfileDialog() {
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate(); // 페이지 이동을 위한 hook
+
     const [formData, setFormData] = useState({
         name: "",
-        username: "",
+        gender: "",
         dateOfBirth: null as Date | null,
         sleepHours: 7,
         coffeeIntake: 2,
     });
 
-    // 폼 제출 핸들러
-    const handleSubmit = (e: React.FormEvent) => {
+    // 폼 제출 핸들러 (백엔드 연동)
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('폼 데이터:', formData);
+        setIsLoading(true);
+
+        try {
+            console.log('📤 전송할 데이터:', formData);
+
+            // 백엔드 API 호출
+            const response = await fetch('http://localhost:3000/api/profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: formData.name,
+                    gender: formData.gender,
+                    dateOfBirth: formData.dateOfBirth?.toISOString().split('T')[0] || null,
+                    sleepHours: formData.sleepHours,
+                    coffeeIntake: formData.coffeeIntake
+                })
+            });
+
+            const data = await response.json();
+            console.log('📥 받은 응답:', data);
+
+            if (response.ok && data.success) {
+                // 성공 처리
+                alert('✅ 프로필이 성공적으로 저장되었습니다!');
+                console.log('저장된 프로필 ID:', data.data.id);
+
+                // 대시보드로 리다이렉트
+                setTimeout(() => {
+                    navigate('/dashboard');
+                }, 500);
+
+                // 폼 초기화
+                setFormData({
+                    name: "",
+                    gender: "",
+                    dateOfBirth: null,
+                    sleepHours: 7,
+                    coffeeIntake: 2,
+                });
+            } else {
+                // 실패 처리
+                alert(`❌ 저장 실패: ${data.error || '알 수 없는 오류'}`);
+            }
+
+        } catch (error) {
+            console.error('🔥 API 호출 에러:', error);
+            alert('❌ 네트워크 오류가 발생했습니다.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     // Input 필드 변경 핸들러
@@ -63,22 +118,19 @@ export function ProfileDialog() {
                                 value={formData.name}
                                 onChange={(e) => handleInputChange('name', e.target.value)}
                                 placeholder="홍길동"
+                                disabled={isLoading}
                             />
                         </div>
                         <div className="grid gap-3">
-                            <Label htmlFor="username-1">사용자 이름</Label>
-                            <Input
-                                id="username-1"
-                                name="username"
-                                value={formData.username}
-                                onChange={(e) => handleInputChange('username', e.target.value)}
-                                placeholder="@honggildong"
+                            <GenderSelect
+                                value={formData.gender}
+                                onChange={(value: string) => handleInputChange('gender', value)}
                             />
                         </div>
                         <div className="grid gap-3">
                             <DatePicker
                                 value={formData.dateOfBirth}
-                                onChange={(date) => handleInputChange('dateOfBirth', date)}
+                                onChange={(date: Date | null) => handleInputChange('dateOfBirth', date)}
                             />
                         </div>
                         <div className="grid gap-3">
@@ -87,7 +139,7 @@ export function ProfileDialog() {
                                 id="sleep-1"
                                 name="sleep"
                                 value={formData.sleepHours}
-                                onChange={(value) => handleInputChange('sleepHours', value)}
+                                onChange={(value: number) => handleInputChange('sleepHours', value)}
                             />
                         </div>
                         <div className="grid gap-3">
@@ -96,15 +148,19 @@ export function ProfileDialog() {
                                 id="coffee-1"
                                 name="coffee"
                                 value={formData.coffeeIntake}
-                                onChange={(value) => handleInputChange('coffeeIntake', value)}
+                                onChange={(value: number) => handleInputChange('coffeeIntake', value)}
                             />
                         </div>
                     </div>
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button variant="outline" type="button">취소</Button>
+                            <Button variant="outline" type="button" disabled={isLoading}>
+                                취소
+                            </Button>
                         </DialogClose>
-                        <Button type="submit">저장</Button>
+                        <Button type="submit" disabled={isLoading}>
+                            {isLoading ? '저장 중...' : '저장'}
+                        </Button>
                     </DialogFooter>
                 </form>
             </DialogContent>
