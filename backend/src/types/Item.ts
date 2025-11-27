@@ -1,6 +1,6 @@
 export interface Item {
   id?: number;
-  profile_id: number;
+  gender: string;
   name: string;
   quantity?: number;
   value?: number;
