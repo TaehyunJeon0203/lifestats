@@ -58,6 +58,8 @@ export function ProfileDialog() {
             console.log('📥 받은 응답:', data);
 
             if (response.ok && data.success) {
+                localStorage.setItem('profileId', data.data.id);
+
                 // 성공 처리
                 alert('✅ 프로필이 성공적으로 저장되었습니다!');
                 console.log('저장된 프로필 ID:', data.data.id);

@@ -5,9 +5,9 @@ export interface Profile {
   gender?: 'M' | 'F' | 'Other';
   playtime?: number;
   birthdate?: string;
-  dateOfBirth?: string;  // 추가
-  sleepHours?: number;   // 추가
-  coffeeIntake?: number; // 추가
+  dateOfBirth?: string;
+  sleepHours?: number;
+  coffeeIntake?: number;
   account_created?: string;
   last_played?: string;
   total_assets?: number;

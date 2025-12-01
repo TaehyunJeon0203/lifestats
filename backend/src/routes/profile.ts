@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { pool } from '../db';
 import { calculateLifeStats } from '../utils/statsCalculator';
+import { StatsResponse } from '../types/Stats';
 
 const router = Router();
 
@@ -92,7 +93,7 @@ router.get('/', async (req, res) => {
 router.get('/:id/stats', async (req, res) => {
     try {
         const { id } = req.params;
-        const [rows] = await pool.execute('SELECT * FROM profiles WHERE id = ?', [id]) as any[];
+        const [rows] = await pool.execute('SELECT name, date_of_birth, sleep_hours, coffee_intake FROM profiles WHERE id = ?', [id]) as any[];
         
         if (rows.length === 0) {
             return res.status(404).json({ success: false, error: '프로필을 찾을 수 없습니다.' });
@@ -104,12 +105,27 @@ router.get('/:id/stats', async (req, res) => {
             sleepHours: profile.sleep_hours,
             coffeeIntake: profile.coffee_intake
         });
+
+        const birthDate = new Date(profile.date_of_birth);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
         
-        res.json({
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        const response: StatsResponse = {
             success: true,
             data: lifeStats,
-            profile: { name: profile.name, dateOfBirth: profile.date_of_birth }
-        });
+            profile: {
+                name: profile.name,
+                dateOfBirth: profile.date_of_birth,
+                age: age
+            }
+        };
+
+        res.json(response);
         
     } catch (error) {
         console.error('❌ 라이프 통계 조회 실패:', error);

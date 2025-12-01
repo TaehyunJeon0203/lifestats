@@ -9,7 +9,7 @@ export interface LifeStats {
   
   // 수면 통계
   totalSleepHours: number;
-  sleepPercentage: number; // 전체 인생 중 잠든 비율
+  sleepPercentage: number;
 }
 
 // 통계 계산용 입력 데이터
@@ -26,5 +26,6 @@ export interface StatsResponse {
   profile: {
     name: string;
     dateOfBirth: string;
+    age: number;
   };
 }

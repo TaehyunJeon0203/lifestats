@@ -1,157 +1,52 @@
-import * as React from "react"
+import * as React from "react";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-import man from "../assets/man.png"
+import man from "../assets/man.png";
 
-// This is sample data.
-const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-  navMain: [
-    {
-      title: "Getting Started",
-      url: "#",
-      items: [
-        {
-          title: "Installation",
-          url: "#",
-        },
-        {
-          title: "Project Structure",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Building Your Application",
-      url: "#",
-      items: [
-        {
-          title: "Routing",
-          url: "#",
-        },
-        {
-          title: "Data Fetching",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Rendering",
-          url: "#",
-        },
-        {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "API Reference",
-      url: "#",
-      items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
-        },
-      ],
-    },
-  ],
+interface ProfileData {
+  id: string;
+  name: string;
+  gender: string;
+  dateOfBirth: string;
+  sleepHours: number;
+  coffeeIntake: number;
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface StatsData {
+  age: number;
+  hoursLived: number;
+  daysLived: number;
+  totalSleepHours: number;
+  totalCoffeeCups: number;
+  sleepPercentage: number;
+}
+
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  profile?: ProfileData | null;
+  stats?: StatsData | null;
+}
+
+export function AppSidebar({ profile, stats, ...props }: AppSidebarProps) {
+  // 기본값 설정
+  const displayName = profile?.name || "전태현";
+  const displayAge = stats ? Math.floor(Math.abs(stats.daysLived) / 365) : 24;
+  const displayLifetime = stats ? Math.abs(stats.hoursLived).toFixed(1) : "25400.4";
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
-            <span className="text-5xl font-bold">24</span>
+            <span className="text-5xl font-bold">{displayAge}</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-gray-500">
-            Lifetime 25400.4h<br />
-            
+            Lifetime {displayLifetime}h<br />
           </div>
         </div>
       </SidebarHeader>
@@ -163,11 +58,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             className="h-full w-auto object-contain"
           />
           <span className="mt-2 text-lg font-semibold text-gray-800 dark:text-gray-200">
-            전태현
+            {displayName}
           </span>
         </div>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
