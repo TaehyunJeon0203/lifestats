@@ -34,9 +34,9 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AppSidebar({ profile, stats, ...props }: AppSidebarProps) {
   // 기본값 설정
-  const displayName = profile?.name || "전태현";
-  const displayAge = stats ? Math.floor(Math.abs(stats.daysLived) / 365) : 24;
-  const displayLifetime = stats ? Math.abs(stats.hoursLived).toFixed(1) : "25400.4";
+  const displayName = profile?.name || "";
+  const displayAge = stats ? Math.floor(Math.abs(stats.daysLived) / 365) : 0;
+  const displayLifetime = stats ? Math.abs(stats.hoursLived).toFixed(1) : "오류";
 
   return (
     <Sidebar {...props}>

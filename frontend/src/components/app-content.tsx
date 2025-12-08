@@ -25,6 +25,8 @@ interface AppContentProps {
 }
 
 export function AppContent({ profile, stats }: AppContentProps) {
+    console.log('Profile', profile);
+    console.log('Stats', stats);
     if (!profile || !stats) {
         return (
             <div className="flex-1 space-y-4 p-8 pt-6">
