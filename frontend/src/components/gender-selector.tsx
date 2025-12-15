@@ -27,7 +27,6 @@ export function GenderSelect({ value, onChange }: GenderSelectProps) {
                     <SelectContent>
                         <SelectItem value="male">남성</SelectItem>
                         <SelectItem value="female">여성</SelectItem>
-                        <SelectItem value="other">그 이외의 무언가</SelectItem>
                     </SelectContent>
                 </Select>
             </Field>
