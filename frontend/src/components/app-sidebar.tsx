@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import man from "../assets/man.png";
+import woman from "../assets/woman.png";
 
 interface ProfileData {
   id: string;
@@ -38,6 +39,9 @@ export function AppSidebar({ profile, stats, ...props }: AppSidebarProps) {
   const displayAge = stats ? Math.floor(Math.abs(stats.daysLived) / 365) : 0;
   const displayLifetime = stats ? Math.abs(stats.hoursLived).toFixed(1) : "오류";
 
+  // 성별에 따라 이미지 선택
+  const characterImage = profile?.gender === 'female' ? woman : man;
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -53,7 +57,7 @@ export function AppSidebar({ profile, stats, ...props }: AppSidebarProps) {
       <SidebarContent>
         <div className="flex flex-col items-center">
           <img
-            src={man}
+            src={characterImage}
             alt="캐릭터"
             className="h-full w-auto object-contain"
           />

@@ -2,7 +2,7 @@ export interface Profile {
   id?: number;
   name: string;
   age?: number;
-  gender?: 'M' | 'F' | 'Other';
+  gender?: 'male' | 'female' | 'other';
   playtime?: number;
   birthdate?: string;
   dateOfBirth?: string;

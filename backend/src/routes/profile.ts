@@ -93,7 +93,7 @@ router.get('/', async (req, res) => {
 router.get('/:id/stats', async (req, res) => {
     try {
         const { id } = req.params;
-        const [rows] = await pool.execute('SELECT name, date_of_birth, sleep_hours, coffee_intake FROM profiles WHERE id = ?', [id]) as any[];
+        const [rows] = await pool.execute('SELECT name, gender, date_of_birth, sleep_hours, coffee_intake FROM profiles WHERE id = ?', [id]) as any[];
         
         if (rows.length === 0) {
             return res.status(404).json({ success: false, error: '프로필을 찾을 수 없습니다.' });
@@ -122,6 +122,7 @@ router.get('/:id/stats', async (req, res) => {
                 name: profile.name,
                 dateOfBirth: profile.date_of_birth,
                 age: age,
+                gender: profile.gender,
                 dailyCoffeeIntake: profile.coffee_intake
             }
         };

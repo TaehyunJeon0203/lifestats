@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import { ShareCard } from '@/components/share-card';
 
 interface ProfileData {
     id: string;
@@ -107,7 +108,7 @@ export function AppContent({ profile, stats }: AppContentProps) {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">수면 비율</CardTitle>
+                        <CardTitle className="text-sm font-medium">잠들어있던 비율</CardTitle>
                         <span className="text-2xl">📊</span>
                     </CardHeader>
                     <CardContent>
@@ -138,7 +139,19 @@ export function AppContent({ profile, stats }: AppContentProps) {
                                 </span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-sm">잠들어 있던 시간을 일했다면:</span>
+                                <span className="text-sm">심장이 뛴 횟수:</span>
+                                <span className="text-sm font-medium">
+                                    {(Math.abs(stats.hoursLived) * 60 * 70).toLocaleString()}회
+                                </span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-sm">숨쉰 횟수:</span>
+                                <span className="text-sm font-medium">
+                                    {(Math.abs(stats.hoursLived) * 60 * 16).toLocaleString()}회
+                                </span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-sm">잠들어 있던 시간에 일했다면:</span>
                                 <span className="text-sm font-medium">
                                     {(Math.abs(stats.totalSleepHours) * 10320).toLocaleString()}원
                                 </span>
@@ -152,6 +165,25 @@ export function AppContent({ profile, stats }: AppContentProps) {
                         </div>
                     </CardContent>
                 </Card>
+            </div>
+            <div className="flex-1 space-y-4 p-8 pt-6">
+                <div className="flex items-center justify-between space-y-2">
+                    <h2 className="text-3xl font-bold tracking-tight">{profile.name}님의 인생 통계</h2>
+                </div>
+
+                {/* 공유 카드 추가 */}
+                <ShareCard
+                    profile={{ name: profile.name }}
+                    stats={{
+                        age: Math.floor(Math.abs(stats.daysLived) / 365),
+                        hoursLived: Math.abs(stats.hoursLived),
+                        daysLived: Math.abs(stats.daysLived),
+                        totalCoffeeCups: Math.abs(stats.totalCoffeeCups),
+                        totalSleepHours: Math.abs(stats.totalSleepHours)
+                    }}
+                />
+
+                {/* ...existing cards... */}
             </div>
         </div>
     );
