@@ -7,7 +7,7 @@ const app = express();
 
 // 미들웨어 설정
 app.use(cors({
-    origin: 'http://localhost:5173', // Vite 개발 서버
+    origin: ['http://172.20.10.2:5173', 'http://localhost:5173', process.env.PRODUCTION_URL || 'https://vercel.com/taehyun-jeons-projects/lifestat'], // Vite 개발 서버
     credentials: true
 }));
 app.use(express.json()); // JSON 파싱 (중요!)
@@ -29,12 +29,14 @@ app.get("/", async (req, res) => {
   }
 });
 
+const PORT = process.env.PORT || 3000;
+
 // 서버 시작
 const startServer = async () => {
     const dbReady = await initializeDatabase();
     
     if (dbReady) {
-        app.listen(3000, () => {
+        app.listen(3000, '0.0.0.0',() => {
             console.log("🚀 Server running on port 3000");
             console.log("📊 Profile API: http://localhost:3000/api/profile");
         });
