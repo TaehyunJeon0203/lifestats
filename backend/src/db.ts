@@ -2,26 +2,29 @@ import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 dotenv.config();
 
-export const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || 'root',
-  database: process.env.DB_NAME || 'lifestats',
-  port: Number(process.env.DB_PORT) || 3306,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
+// DATABASE_URL 우선 사용 (Railway 권장 방식)
+const databaseUrl = process.env.DATABASE_URL;
+
+export const pool = databaseUrl 
+  ? mysql.createPool(databaseUrl)
+  : mysql.createPool({
+      host: process.env.DB_HOST || 'localhost',
+      user: process.env.DB_USER || 'root',
+      password: process.env.DB_PASSWORD || 'root',
+      database: process.env.DB_NAME || 'lifestats',
+      port: Number(process.env.DB_PORT) || 3306,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+    });
 
 export const initializeDatabase = async () => {
   try {
     const connection = await pool.getConnection();
     console.log('✅ Database connected successfully');
-    console.log(`📍 DB Host: ${process.env.DB_HOST}`);
     
     const isProduction = process.env.NODE_ENV === 'production';
     
-    // ⚠️ 프로덕션에서는 테이블을 삭제하지 않음!
     if (!isProduction) {
       console.log('🔄 Development mode: Dropping and recreating tables...');
       await connection.execute(`SET FOREIGN_KEY_CHECKS = 0`);
