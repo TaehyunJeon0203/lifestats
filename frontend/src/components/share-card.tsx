@@ -54,7 +54,7 @@ export function ShareCard({ profile, stats }: ShareCardProps) {
         // 카드 영역
         const cardY = 400;
         const cardWidth = 950;
-        const cardHeight = 1200;
+        const cardHeight = 1350;
         const cardX = (canvas.width - cardWidth) / 2;
 
         // 카드 배경
@@ -72,6 +72,7 @@ export function ShareCard({ profile, stats }: ShareCardProps) {
             { emoji: '❤️', label: '심장 박동', value: `${(stats.hoursLived * 60 * 70).toLocaleString()}회` },
             { emoji: '🫁', label: '숨쉰 횟수', value: `${(stats.hoursLived * 60 * 16).toLocaleString()}회` },
             { emoji: '😴', label: '총 수면시간', value: `${(stats.totalSleepHours / 8760).toFixed(1)}년` },
+            { emoji: '💼', label: '잠든 시간 일했다면', value: `${(stats.totalSleepHours * 10320).toLocaleString()}원` },
             { emoji: '☕', label: '마신 커피 (20세 이후)', value: `${stats.totalCoffeeCups.toLocaleString()}잔` },
             { emoji: '💰', label: '커피에 쓴 돈', value: `${(stats.totalCoffeeCups * 3000).toLocaleString()}원` },
         ];
