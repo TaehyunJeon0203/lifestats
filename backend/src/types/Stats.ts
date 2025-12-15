@@ -27,5 +27,6 @@ export interface StatsResponse {
     name: string;
     dateOfBirth: string;
     age: number;
+    dailyCoffeeIntake: number;
   };
 }

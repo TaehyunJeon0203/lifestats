@@ -7,7 +7,7 @@ interface ProfileData {
     gender: string;
     dateOfBirth: string;
     sleepHours: number;
-    coffeeIntake: number;
+    dailyCoffeeIntake: number;
 }
 
 interface StatsData {
@@ -98,7 +98,7 @@ export function AppContent({ profile, stats }: AppContentProps) {
                             {Math.abs(stats.totalCoffeeCups).toLocaleString()}잔
                         </div>
                         <p className="text-xs text-muted-foreground">
-                            하루 평균 {profile.coffeeIntake}잔
+                            하루 평균 {profile.dailyCoffeeIntake}잔
                         </p>
                     </CardContent>
                 </Card>
@@ -138,15 +138,15 @@ export function AppContent({ profile, stats }: AppContentProps) {
                                 </span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-sm">수면으로 보낸 연수:</span>
+                                <span className="text-sm">잠들어 있던 시간을 일했다면:</span>
                                 <span className="text-sm font-medium">
-                                    {(Math.abs(stats.totalSleepHours) / 8760).toFixed(1)}년
+                                    {(Math.abs(stats.totalSleepHours) * 10320).toLocaleString()}원
                                 </span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-sm">월 평균 커피:</span>
+                                <span className="text-sm">커피에 쓴 돈:</span>
                                 <span className="text-sm font-medium">
-                                    {(profile.coffeeIntake * 30).toLocaleString()}잔
+                                    {(Math.abs(stats.totalCoffeeCups) * 3000).toLocaleString()}원
                                 </span>
                             </div>
                         </div>

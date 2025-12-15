@@ -22,7 +22,7 @@ interface ProfileData {
   gender: string;
   dateOfBirth: string;
   sleepHours: number;
-  coffeeIntake: number;
+  dailyCoffeeIntake: number;
 }
 
 interface StatsData {

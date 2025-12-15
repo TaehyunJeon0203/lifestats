@@ -121,7 +121,8 @@ router.get('/:id/stats', async (req, res) => {
             profile: {
                 name: profile.name,
                 dateOfBirth: profile.date_of_birth,
-                age: age
+                age: age,
+                dailyCoffeeIntake: profile.coffee_intake
             }
         };
 
