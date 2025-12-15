@@ -125,19 +125,45 @@ export function ShareCard({ profile, stats }: ShareCardProps) {
 
             const file = new File([blob], 'lifestats.png', { type: 'image/png' });
 
-            // 모바일에서 Web Share API 지원 확인
-            if (navigator.share && navigator.canShare({ files: [file] })) {
+            // 디버깅 로그
+            console.log('🔍 Web Share API 지원:', !!navigator.share);
+            console.log('🔍 canShare 지원:', !!navigator.canShare);
+            if (navigator.canShare) {
+                console.log('🔍 파일 공유 가능:', navigator.canShare({ files: [file] }));
+            }
+
+            // Web Share API 지원 확인 (더 관대하게)
+            if (navigator.share) {
                 try {
-                    await navigator.share({
-                        files: [file],
-                        title: '내 인생 통계',
-                        text: `${profile.name}님의 인생 통계`,
-                    });
-                } catch (error) {
-                    console.log('공유 취소됨');
+                    // canShare가 없거나 true를 반환하면 시도
+                    const canShare = !navigator.canShare || navigator.canShare({ files: [file] });
+
+                    if (canShare) {
+                        await navigator.share({
+                            files: [file],
+                            title: '내 인생 통계',
+                            text: `${profile.name}님의 인생 통계`,
+                        });
+                        console.log('✅ 공유 성공');
+                    } else {
+                        // 파일 공유 안되면 다운로드
+                        console.log('⚠️ 파일 공유 불가능, 다운로드로 대체');
+                        downloadImage();
+                        alert('이미지가 다운로드되었습니다. 갤러리에서 인스타그램에 업로드해주세요!');
+                    }
+                } catch (error: any) {
+                    if (error.name === 'AbortError') {
+                        console.log('❌ 공유 취소됨');
+                    } else {
+                        console.error('❌ 공유 오류:', error);
+                        // 오류 발생시 다운로드
+                        downloadImage();
+                        alert('공유에 실패했습니다. 이미지를 다운로드합니다.');
+                    }
                 }
             } else {
                 // Web Share API 미지원시 다운로드
+                console.log('❌ Web Share API 미지원');
                 downloadImage();
                 alert('이미지가 다운로드되었습니다. 갤러리에서 인스타그램에 업로드해주세요!');
             }

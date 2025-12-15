@@ -18,6 +18,7 @@ import { SleepSlider } from "./sleep-slider";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // React Router 사용
 import { GenderSelect } from "./gender-selector";
+import { API_URL } from "@/config";
 
 export function ProfileDialog() {
     const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +41,7 @@ export function ProfileDialog() {
             console.log('📤 전송할 데이터:', formData);
 
             // 백엔드 API 호출
-            const response = await fetch('http://localhost:3000/api/profile', {
+            const response = await fetch(`${API_URL}/api/profile`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { API_URL } from "@/config";
 
 interface ProfileData {
   id: string;
@@ -57,7 +58,7 @@ export default function Dashboard() {
         // 🔥 백엔드에서 프로필과 통계 가져오기
         console.log('📡 API 요청 시작...');
 
-        const response = await fetch(`http://localhost:3000/api/profile/${profileId}/stats`);
+        const response = await fetch(`${API_URL}/api/profile/${profileId}/stats`);
         const data = await response.json();
 
         console.log('📥 API 응답:', data);

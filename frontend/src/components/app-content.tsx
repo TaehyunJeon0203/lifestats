@@ -167,9 +167,6 @@ export function AppContent({ profile, stats }: AppContentProps) {
                 </Card>
             </div>
             <div className="flex-1 space-y-4 p-8 pt-6">
-                <div className="flex items-center justify-between space-y-2">
-                    <h2 className="text-3xl font-bold tracking-tight">{profile.name}님의 인생 통계</h2>
-                </div>
 
                 {/* 공유 카드 추가 */}
                 <ShareCard
