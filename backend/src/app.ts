@@ -5,12 +5,26 @@ import routes from "./routes";
 
 const app = express();
 
-// 미들웨어 설정
+// CORS 설정 - 모든 Vercel 도메인 허용
 app.use(cors({
-    origin: ['http://172.20.10.2:5173', 'http://localhost:5173', process.env.PRODUCTION_URL || 'https://lifestats-sepia.vercel.app/'],
+    origin: function(origin, callback) {
+        const allowedOrigins = [
+            'http://localhost:5173',
+            'http://172.20.10.2:5173',
+            'https://lifestats-sepia.vercel.app'
+        ];
+        
+        // origin이 없거나, 허용 목록에 있거나, vercel.app으로 끝나면 허용
+        if (!origin || allowedOrigins.includes(origin) || (origin && origin.endsWith('.vercel.app'))) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
-app.use(express.json()); // JSON 파싱 (중요!)
+
+app.use(express.json());
 
 // API 라우터 연결
 app.use('/api', routes);
@@ -29,19 +43,22 @@ app.get("/", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3000;  // Number()로 변환
 
 // 서버 시작
 const startServer = async () => {
     const dbReady = await initializeDatabase();
     
     if (dbReady) {
-        app.listen(3000, '0.0.0.0',() => {
-            console.log("🚀 Server running on port 3000");
-            console.log("📊 Profile API: http://localhost:3000/api/profile");
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`🚀 Server running on port ${PORT}`);
+            console.log("📊 Profile API ready");
         });
     } else {
         console.error('❌ Database 초기화 실패');
+        if (process.env.NODE_ENV === 'production') {
+            process.exit(1);
+        }
     }
 };
 
