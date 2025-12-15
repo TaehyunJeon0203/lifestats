@@ -45,7 +45,7 @@ export function ShareCard({ profile, stats }: ShareCardProps) {
 
         // 제목
         ctx.font = 'bold 80px Arial';
-        ctx.fillText('내 인생 통계', canvas.width / 2, 200);
+        ctx.fillText('Lifestats', canvas.width / 2, 200);
 
         // 이름
         ctx.font = 'bold 60px Arial';
