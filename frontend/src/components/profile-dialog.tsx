@@ -146,7 +146,7 @@ export function ProfileDialog() {
                             />
                         </div>
                         <div className="grid gap-3">
-                            <Label htmlFor="coffee-1">하루 커피 섭취량</Label>
+                            <Label htmlFor="coffee-1">하루 커피 섭취량(20세 이후)</Label>
                             <CoffeeSlider
                                 id="coffee-1"
                                 name="coffee"

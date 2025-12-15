@@ -72,7 +72,7 @@ export function ShareCard({ profile, stats }: ShareCardProps) {
             { emoji: '❤️', label: '심장 박동', value: `${(stats.hoursLived * 60 * 70).toLocaleString()}회` },
             { emoji: '🫁', label: '숨쉰 횟수', value: `${(stats.hoursLived * 60 * 16).toLocaleString()}회` },
             { emoji: '😴', label: '총 수면시간', value: `${(stats.totalSleepHours / 8760).toFixed(1)}년` },
-            { emoji: '☕', label: '마신 커피', value: `${stats.totalCoffeeCups.toLocaleString()}잔` },
+            { emoji: '☕', label: '마신 커피 (20세 이후)', value: `${stats.totalCoffeeCups.toLocaleString()}잔` },
             { emoji: '💰', label: '커피에 쓴 돈', value: `${(stats.totalCoffeeCups * 3000).toLocaleString()}원` },
         ];
 
@@ -205,7 +205,8 @@ export function ShareCard({ profile, stats }: ShareCardProps) {
             />
 
             <p className="text-sm text-muted-foreground text-center">
-                💡 모바일에서는 공유 버튼을 눌러 인스타그램에 바로 공유할 수 있습니다
+                💡 공유 이미지 생성을 클릭 후 공유하거나 다운하세요<br />
+                모바일에서는 공유 버튼을 눌러 인스타그램에 바로 공유할 수 있습니다
             </p>
         </div>
     );

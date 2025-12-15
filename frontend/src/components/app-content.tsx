@@ -91,7 +91,7 @@ export function AppContent({ profile, stats }: AppContentProps) {
 
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">총 커피</CardTitle>
+                        <CardTitle className="text-sm font-medium">마신 커피 (20세 이후)</CardTitle>
                         <span className="text-2xl">☕</span>
                     </CardHeader>
                     <CardContent>
