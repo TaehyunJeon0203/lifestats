@@ -7,7 +7,7 @@ const app = express();
 
 // 미들웨어 설정
 app.use(cors({
-    origin: ['http://172.20.10.2:5173', 'http://localhost:5173', process.env.PRODUCTION_URL || 'https://vercel.com/taehyun-jeons-projects/lifestat'], // Vite 개발 서버
+    origin: ['http://172.20.10.2:5173', 'http://localhost:5173', process.env.PRODUCTION_URL || 'https://lifestats-sepia.vercel.app/'],
     credentials: true
 }));
 app.use(express.json()); // JSON 파싱 (중요!)
