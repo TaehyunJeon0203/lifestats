@@ -44,7 +44,22 @@ export function AppContent({ profile, stats }: AppContentProps) {
             <div className="flex items-center justify-between space-y-2">
                 <h2 className="text-3xl font-bold tracking-tight">{profile.name}님의 인생 통계</h2>
             </div>
+            <div className="flex-1 space-y-4 p-8 pt-6">
 
+                {/* 공유 카드 추가 */}
+                <ShareCard
+                    profile={{ name: profile.name }}
+                    stats={{
+                        age: Math.floor(Math.abs(stats.daysLived) / 365),
+                        hoursLived: Math.abs(stats.hoursLived),
+                        daysLived: Math.abs(stats.daysLived),
+                        totalCoffeeCups: Math.abs(stats.totalCoffeeCups),
+                        totalSleepHours: Math.abs(stats.totalSleepHours)
+                    }}
+                />
+
+                {/* ...existing cards... */}
+            </div>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -165,22 +180,6 @@ export function AppContent({ profile, stats }: AppContentProps) {
                         </div>
                     </CardContent>
                 </Card>
-            </div>
-            <div className="flex-1 space-y-4 p-8 pt-6">
-
-                {/* 공유 카드 추가 */}
-                <ShareCard
-                    profile={{ name: profile.name }}
-                    stats={{
-                        age: Math.floor(Math.abs(stats.daysLived) / 365),
-                        hoursLived: Math.abs(stats.hoursLived),
-                        daysLived: Math.abs(stats.daysLived),
-                        totalCoffeeCups: Math.abs(stats.totalCoffeeCups),
-                        totalSleepHours: Math.abs(stats.totalSleepHours)
-                    }}
-                />
-
-                {/* ...existing cards... */}
             </div>
         </div>
     );
